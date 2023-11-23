@@ -35,10 +35,11 @@ export const RESET = css`
   }
 
   ::-webkit-scrollbar-track {
-    background-color: ${COLORS.primary};
+    background-color: ${COLORS.secondary};
   }
 
   ::-webkit-scrollbar-thumb {
     border-radius: 2rem;
+    background-color: ${COLORS.primary};
   }
 `;
