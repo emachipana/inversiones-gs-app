@@ -1,4 +1,5 @@
 import { FormFeedback, Input, InputGroup, InputGroupText } from "reactstrap";
+import { COLORS } from "../../styles";
 
 function InputForm({
   Icon,
@@ -17,7 +18,8 @@ function InputForm({
       <InputGroupText>
         <Icon />
       </InputGroupText>
-      <Input 
+      <Input
+        style={{backgroundColor: COLORS.secondary}}
         id={id}
         name={id}
         disabled={isDisabled}
