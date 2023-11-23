@@ -126,8 +126,8 @@ function Login() {
       </Section>
       <Section isImage>
         <Image 
-          alt="money-in-wallet"
-          src="/photo/money.jpg"
+          alt="plant-with-coins"
+          src="/photo/plant.jpeg"
         />
       </Section>
     </Container>
