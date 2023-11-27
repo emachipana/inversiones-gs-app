@@ -38,7 +38,7 @@ export const Section = styled.section`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 1rem;
+  gap: 0.5rem;
   padding: ${({ isImage }) => isImage ? 0 : "3rem"};
   overflow: hidden;
 
@@ -54,6 +54,10 @@ export const Section = styled.section`
     display: ${({ isImage }) => isImage ? "none" : ""};
     border-radius: 1rem;
     width: 80%;
+    background-image: linear-gradient(rgba(255, 255, 255, .3), rgba(255, 255, 255, .3)), url(/photo/plant.jpeg);
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
   }
 
   @media screen and (max-width: 610px) {

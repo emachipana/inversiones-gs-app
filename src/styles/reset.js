@@ -31,15 +31,13 @@ export const RESET = css`
 
   ::-webkit-scrollbar {
     width: 6px;
-    height: 6px;
   }
 
   ::-webkit-scrollbar-track {
-    background-color: ${COLORS.secondary};
+    background-color: inherit;
   }
 
   ::-webkit-scrollbar-thumb {
-    border-radius: 2rem;
     background-color: ${COLORS.primary};
   }
 `;
