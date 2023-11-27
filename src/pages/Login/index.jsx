@@ -7,6 +7,8 @@ import { MdOutlineAlternateEmail } from "react-icons/md";
 import { BiSolidKey } from "react-icons/bi";
 import { Alert, Spinner } from "reactstrap";
 import Button from "../../components/Button";
+import { RiExchangeDollarLine } from "react-icons/ri";
+import { COLORS } from "../../styles";
 
 function Login() {
   const [isLoading, setIsLoading] = useState(false);
@@ -56,6 +58,10 @@ function Login() {
     <Container>
       <Section>
         <Title>Inversiones G.S.</Title>
+        <RiExchangeDollarLine 
+          color={COLORS.primary}
+          size={50}
+        />
         <Title size={0.9}>Use su cuenta registrada</Title>
         <Formik
           initialValues={initValues}

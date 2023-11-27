@@ -38,7 +38,7 @@ export const Section = styled.section`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 1rem;
+  gap: 0.5rem;
   padding: ${({ isImage }) => isImage ? 0 : "3rem"};
   overflow: hidden;
 
