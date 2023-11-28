@@ -2,15 +2,17 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { FlexRow, NavContainer } from "./styles";
 import { IoIosArrowForward } from "react-icons/io";
 import { useAuth } from "../../context/auth";
+import { useTheme } from "../../context/theme";
 
 function NavItem({ Icon, children, to, isToLogout, setIsOpen }) {
   const { pathname} = useLocation();
   const { logout } = useAuth();
+  const { theme } = useTheme();
   const navigate = useNavigate();
 
   const handleClick = () => {
     navigate(to);
-    setIsOpen(isOpen => !isOpen);
+    setIsOpen(false);
 
     if(isToLogout) logout();
   }
@@ -19,6 +21,7 @@ function NavItem({ Icon, children, to, isToLogout, setIsOpen }) {
     <NavContainer 
       isActive={!isToLogout && pathname === to}
       onClick={handleClick}
+      theme={theme}
     >
       <FlexRow>
         <Icon />

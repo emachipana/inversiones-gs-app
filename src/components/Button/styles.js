@@ -9,8 +9,8 @@ export const Container = styled.button`
   gap: 0.5rem;
   font-size: 17px;
   font-weight: 500;
-  background-color: ${({ color }) => color === "primary" ? COLORS.primary : COLORS.secondary};
-  color: ${({ color }) => color === "primary" ? "white" : COLORS.primary};
+  background-color: ${({ color, theme }) => color === "primary" ? COLORS[theme].primary : COLORS[theme].secondary};
+  color: ${({ color, theme }) => color === "primary" ? COLORS[theme].white : COLORS[theme].primary};
   border-radius: 12px;
   padding: 0.6rem 1rem;
   cursor: pointer;

@@ -6,7 +6,7 @@ export const Container = styled.div`
   width: 100%;
   height: 9.65vh;
   padding: 0.6rem 3rem;
-  background-color: ${COLORS.primary};
+  background-color: ${({ theme }) => COLORS[theme].primary};
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -33,7 +33,7 @@ export const FlexRow = styled.div`
   align-items: center;
   justify-content: ${({ justify }) => justify || "center"};
   gap: ${({ gap }) => gap || 0.5}rem;
-  color: white;
+  color: ${({ theme }) => COLORS[theme].white};
   cursor: ${({ isLogo }) => isLogo ? "pointer" : ""};
 `;
 
@@ -78,7 +78,7 @@ export const NotiItem = styled.div`
   flex-direction: column;
   justify-content: center;
   gap: 2px;
-  border-left: 6px solid ${COLORS.primary};
+  border-left: 6px solid ${({ theme }) => COLORS[theme].primary};
   padding: 2px 6px 4px 6px;
   cursor: pointer;
   transition: .3s ease-in;
@@ -90,7 +90,7 @@ export const NotiItem = styled.div`
 
 export const Text = styled.h3`
   font-size: ${({ size }) => size || 17}px;
-  color: ${({ isTitle, color }) => color || (isTitle ? COLORS.primary : COLORS.gray.bold)};
+  color: ${({ isTitle, color, theme }) => color || (isTitle ? COLORS[theme].primary : COLORS[theme].gray.bold)};
   white-space: nowrap;
 `;
 
