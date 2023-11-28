@@ -4,7 +4,7 @@ import { COLORS } from "../../styles";
 export const Container = styled.aside`
   height: 100%;
   width: 300px;
-  background-color: white;
+  background-color: ${({ theme }) => COLORS[theme].white};
   box-shadow: 0px 0px 4px 4px rgba(0, 0, 0, .2);
   z-index: 49;
   padding: 2rem 1rem;
@@ -33,15 +33,15 @@ export const NavContainer = styled.div`
   border-radius: 1rem;
   align-items: center;
   justify-content: space-between;
-  background-color: ${({ isActive }) => isActive ? COLORS.primary : "white"};
-  color: ${({ isActive }) => isActive ? "white" : COLORS.gray.bold};
+  background-color: ${({ isActive, theme }) => isActive ? COLORS[theme].primary : COLORS[theme].white};
+  color: ${({ isActive, theme }) => isActive ? COLORS[theme].white : COLORS[theme].gray.bold};
   transition: .3s ease-in;
   cursor: pointer;
   font-size: 17px;
 
   &:hover {
-    color: white;
-    background-color: ${COLORS.primary};
+    color: ${({ theme }) => COLORS[theme].white};
+    background-color: ${({ theme }) => COLORS[theme].primary};
   }
 `;
 

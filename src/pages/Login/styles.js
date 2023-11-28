@@ -1,6 +1,12 @@
 import styled from "@emotion/styled";
 import { COLORS } from "../../styles";
 
+export const Parent = styled.div`
+  width: 100vw;
+  height: 100vh;
+  background-color: ${({ theme }) => COLORS[theme].secondary};
+`;
+
 export const Container = styled.div`
   width: 80%;
   max-height: 80vh;
@@ -10,7 +16,7 @@ export const Container = styled.div`
   left: 0;
   position: absolute;
   margin: auto;
-  background-color: ${COLORS.primary};
+  background-color: ${({ theme }) => COLORS[theme].primary};
   border-radius: 1rem;
   display: flex;
   align-items: center;
@@ -29,7 +35,7 @@ export const Container = styled.div`
 export const Section = styled.section`
   width: 40%;
   height: 85%;
-  background-color: white;
+  background-color: ${({ theme }) => COLORS[theme].white};
   border-top-right-radius: ${({ isImage }) => isImage ? "1rem" : 0};
   border-top-left-radius: ${({ isImage }) => isImage ? 0 : "1rem"};
   border-bottom-right-radius: ${({ isImage }) => isImage ? "1rem" : 0};
@@ -54,7 +60,7 @@ export const Section = styled.section`
     display: ${({ isImage }) => isImage ? "none" : ""};
     border-radius: 1rem;
     width: 80%;
-    background-image: linear-gradient(rgba(255, 255, 255, .3), rgba(255, 255, 255, .3)), url(/photo/plant.jpeg);
+    background-image: linear-gradient(${({ theme }) => theme === "light" ? "rgba(255, 255, 255, .3), rgba(255, 255, 255, .3)" : "rgba(0, 0, 0, .5), rgba(0, 0, 0, .5)"}), url(/photo/plant.jpeg);
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center;
@@ -76,7 +82,7 @@ export const Title = styled.h1`
   font-size: ${({ size }) => size || 2}rem;
   font-weight: ${({ size }) => size < 1 ? 500 : 700};
   text-align: center;
-  color: ${COLORS.primary};
+  color: ${({ theme }) =>  COLORS[theme].primary};
 `;
 
 export const Form = styled.form`

@@ -6,20 +6,13 @@ import { Dropdown, DropdownMenu, DropdownToggle } from "reactstrap";
 import { COLORS } from "../../styles";
 import { useNavigate } from "react-router-dom";
 import { HiOutlineBars3BottomLeft } from "react-icons/hi2";
+import { useTheme } from "../../context/theme";
+import { MdLightMode, MdDarkMode } from "react-icons/md";
 
 function Navbar({ isOpen, setIsOpen }) {
-  const [dropDownOpen, setDropDownOpen] = useState({
-    noti: false,
-    prof: false
-  });
+  const [dropDownOpen, setDropDownOpen] = useState(false);
   const navigate = useNavigate();
-
-  const toggle = (type) => {
-    setDropDownOpen(prev => ({
-      noti: type === "noti" ? !prev.noti : false,
-      prof: type === "prof" ? !prev.prof : false
-    }));
-  }
+  const { theme, changeTheme } = useTheme();
 
   // fort testing
   const notifications = [
@@ -61,25 +54,21 @@ function Navbar({ isOpen, setIsOpen }) {
   ];
 
   return (
-    <Container>
-      <FlexRow gap={1}>
-        {
-          isOpen
-          ? <IoClose className="handle" />
-          : <HiOutlineBars3BottomLeft className="handle" onClick={() => setIsOpen(!isOpen)} />
-        }
-        <FlexRow isLogo onClick={() => navigate("/")}>
-          <RiExchangeDollarLine 
-            size={32}
-            style={{ marginTop: "-4px" }}
-          />
+    <Container theme={theme}>
+      <FlexRow gap={1} theme={theme}>
+        <HiOutlineBars3BottomLeft
+          className="handle"
+          onClick={() => setIsOpen(!isOpen)}
+        />
+        <FlexRow theme={theme} isLogo onClick={() => navigate("/")}>
+          <RiExchangeDollarLine className="icon"/>
           <Name>Inversiones GS</Name>
         </FlexRow>
       </FlexRow>
-      <FlexRow gap={3}>
+      <FlexRow gap={2} theme={theme}>
         <Dropdown
-          isOpen={dropDownOpen.noti}
-          toggle={() => toggle("noti")}
+          isOpen={dropDownOpen}
+          toggle={() => setDropDownOpen(!dropDownOpen)}
           direction="down"
         >
           <DropdownToggle
@@ -94,10 +83,10 @@ function Navbar({ isOpen, setIsOpen }) {
           </DropdownToggle>
           <DropdownMenu
             end
-            style={{ marginTop: "18px", width: "230px", maxHeight: "350px", overflow: "auto"}}
+            style={{ marginTop: "18px", width: "230px", maxHeight: "350px", overflow: "auto", backgroundColor: COLORS[theme].white}}
           >
             <Notifications>
-              <Text isTitle>Pagos pendientes</Text>
+              <Text isTitle theme={theme}>Pagos pendientes</Text>
               {
                 notifications.length <= 0
                 ? "Sin nada por ahora!"
@@ -106,9 +95,9 @@ function Navbar({ isOpen, setIsOpen }) {
                     const isToday = date.getDate() === new Date(noti.next_pay_date).getDate();
 
                     return (
-                      <NotiItem key={index} isToday={isToday}>
-                        <Text size={15}> { noti.name } </Text>
-                        <FlexRow justify="space-between">
+                      <NotiItem key={index} isToday={isToday} theme={theme}>
+                        <Text theme={theme} size={15}> { noti.name } </Text>
+                        <FlexRow justify="space-between" theme={theme}>
                           <Badge
                             isToday={isToday}
                           >
@@ -118,7 +107,7 @@ function Navbar({ isOpen, setIsOpen }) {
                               : "Mañana"
                             }
                           </Badge>
-                          <Text size={15} color={COLORS.primary}>S/. {noti.next_pay_amount}</Text>
+                          <Text theme={theme} size={15} color={COLORS[theme].primary}>S/. {noti.next_pay_amount}</Text>
                         </FlexRow>
                       </NotiItem>
                     );
@@ -127,6 +116,19 @@ function Navbar({ isOpen, setIsOpen }) {
             </Notifications>
           </DropdownMenu>
         </Dropdown>
+        {
+          theme === "light"
+          ? <MdLightMode 
+              size={28}
+              style={{ cursor: "pointer" }}
+              onClick={changeTheme}
+            />
+          : <MdDarkMode 
+              size={28}
+              style={{ cursor: "pointer" }}
+              onClick={changeTheme}
+            />
+        }
       </FlexRow>
     </Container>
   );

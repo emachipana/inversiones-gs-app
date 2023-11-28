@@ -5,8 +5,11 @@ import { FaMoneyBillTransfer } from "react-icons/fa6";
 import { BsFillPersonVcardFill } from "react-icons/bs";
 import { CgProfile } from "react-icons/cg";
 import { ImExit } from "react-icons/im";
+import { useTheme } from "../../context/theme";
 
 function Aside({ isOpen, setIsOpen }) {
+  const { theme } = useTheme();
+
   return (
     <>
       {
@@ -14,6 +17,7 @@ function Aside({ isOpen, setIsOpen }) {
       }
       <Container
         isOpen={isOpen}
+        theme={theme}
       >
         <NavItem 
           setIsOpen={setIsOpen}
