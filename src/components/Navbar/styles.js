@@ -35,11 +35,27 @@ export const FlexRow = styled.div`
   gap: ${({ gap }) => gap || 0.5}rem;
   color: ${({ theme }) => COLORS[theme].white};
   cursor: ${({ isLogo }) => isLogo ? "pointer" : ""};
+
+  .icon {
+    font-size: 2rem;
+    margin-top: 4px;
+
+    @media screen and (max-width: 450px) {
+      font-size: 1.5rem;
+      margin: 0;
+    }
+  }
 `;
 
 export const Name = styled.h1`
   font-size: 1.5rem;
   font-weight: 600;
+  margin: 0;
+  padding: 0;
+
+  @media screen and (max-width: 450px) {
+    font-size: 1.3rem;
+  }
 `;
 
 export const Profile = styled.img`

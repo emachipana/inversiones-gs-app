@@ -7,21 +7,12 @@ import { COLORS } from "../../styles";
 import { useNavigate } from "react-router-dom";
 import { HiOutlineBars3BottomLeft } from "react-icons/hi2";
 import { useTheme } from "../../context/theme";
+import { MdLightMode, MdDarkMode } from "react-icons/md";
 
 function Navbar({ isOpen, setIsOpen }) {
-  const [dropDownOpen, setDropDownOpen] = useState({
-    noti: false,
-    prof: false
-  });
+  const [dropDownOpen, setDropDownOpen] = useState(false);
   const navigate = useNavigate();
-  const { theme } = useTheme();
-
-  const toggle = (type) => {
-    setDropDownOpen(prev => ({
-      noti: type === "noti" ? !prev.noti : false,
-      prof: type === "prof" ? !prev.prof : false
-    }));
-  }
+  const { theme, changeTheme } = useTheme();
 
   // fort testing
   const notifications = [
@@ -65,23 +56,19 @@ function Navbar({ isOpen, setIsOpen }) {
   return (
     <Container theme={theme}>
       <FlexRow gap={1} theme={theme}>
-        {
-          isOpen
-          ? <IoClose className="handle" />
-          : <HiOutlineBars3BottomLeft className="handle" onClick={() => setIsOpen(!isOpen)} />
-        }
+        <HiOutlineBars3BottomLeft
+          className="handle"
+          onClick={() => setIsOpen(!isOpen)}
+        />
         <FlexRow theme={theme} isLogo onClick={() => navigate("/")}>
-          <RiExchangeDollarLine 
-            size={32}
-            style={{ marginTop: "-4px" }}
-          />
+          <RiExchangeDollarLine className="icon"/>
           <Name>Inversiones GS</Name>
         </FlexRow>
       </FlexRow>
-      <FlexRow gap={3} theme={theme}>
+      <FlexRow gap={2} theme={theme}>
         <Dropdown
-          isOpen={dropDownOpen.noti}
-          toggle={() => toggle("noti")}
+          isOpen={dropDownOpen}
+          toggle={() => setDropDownOpen(!dropDownOpen)}
           direction="down"
         >
           <DropdownToggle
@@ -129,6 +116,19 @@ function Navbar({ isOpen, setIsOpen }) {
             </Notifications>
           </DropdownMenu>
         </Dropdown>
+        {
+          theme === "light"
+          ? <MdLightMode 
+              size={28}
+              style={{ cursor: "pointer" }}
+              onClick={changeTheme}
+            />
+          : <MdDarkMode 
+              size={28}
+              style={{ cursor: "pointer" }}
+              onClick={changeTheme}
+            />
+        }
       </FlexRow>
     </Container>
   );
