@@ -5,6 +5,7 @@ import { Global } from '@emotion/react'
 import { RESET } from './styles/reset'
 import { BrowserRouter } from 'react-router-dom'
 import { AuthProvider } from './context/auth'
+import { ThemeProvider } from './context/theme'
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 ReactDOM.createRoot(document.getElementById('root')).render(
@@ -12,7 +13,9 @@ ReactDOM.createRoot(document.getElementById('root')).render(
     <Global styles={RESET} />
     <BrowserRouter>
       <AuthProvider>
-        <App />
+        <ThemeProvider>
+          <App />
+        </ThemeProvider>
       </AuthProvider>
     </BrowserRouter>
   </React.StrictMode>,
