@@ -2,7 +2,6 @@ import { useState } from "react";
 import { Container, Form, Image, Parent, Section, Title } from "./styles";
 import { useAuth } from "../../context/auth";
 import { Formik } from "formik";
-import InputForm from "../../components/InputForm";
 import { MdOutlineAlternateEmail } from "react-icons/md";
 import { BiSolidKey } from "react-icons/bi";
 import { Alert, Spinner } from "reactstrap";
@@ -10,6 +9,7 @@ import Button from "../../components/Button";
 import { RiExchangeDollarLine } from "react-icons/ri";
 import { COLORS } from "../../styles";
 import { useTheme } from "../../context/theme";
+import Group from "../../components/Input/Group";
 
 function Login() {
   const [isLoading, setIsLoading] = useState(false);
@@ -83,7 +83,7 @@ function Login() {
               <Form
                 onSubmit={handleSubmit}
               >
-                <InputForm 
+                <Group
                   Icon={MdOutlineAlternateEmail}
                   id="email"
                   placeholder="Correo"
@@ -93,7 +93,7 @@ function Login() {
                   error={errors.email}
                   isTouched={touched.email}
                 />
-                <InputForm 
+                <Group 
                   Icon={BiSolidKey}
                   id="password"
                   type="password"

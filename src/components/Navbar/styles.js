@@ -12,6 +12,8 @@ export const Container = styled.div`
   justify-content: space-between;
   grid-area: 1 / 1 / 2 / 3;
   z-index: 50;
+  position: sticky;
+  top: 0;
 
   @media screen and (max-width: 800px) {
     padding: 0.6rem 1rem;

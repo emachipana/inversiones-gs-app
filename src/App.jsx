@@ -3,10 +3,13 @@ import UnauthenticatedApp from "./UnauthenticatedApp";
 import { useAuth } from "./context/auth"
 
 function App() {
-  const { user } = useAuth();
+  const { user, isLoading } = useAuth();
 
   return (
-    user ? <AuthenticatedApp /> : <UnauthenticatedApp />
+    isLoading
+    ? "Cargando..."
+    : (user ? <AuthenticatedApp /> : <UnauthenticatedApp />)
+    
   )
 }
 

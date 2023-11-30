@@ -31,7 +31,7 @@ export const RESET = css`
   }
 
   ::-webkit-scrollbar-track {
-    background-color: inherit;
+    background-color: #808080;
   }
 
   ::-webkit-scrollbar-thumb {

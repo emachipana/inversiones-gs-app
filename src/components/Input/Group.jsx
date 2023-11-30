@@ -1,7 +1,7 @@
 import { FormFeedback, Input, InputGroup, InputGroupText } from "reactstrap";
 import { COLORS } from "../../styles";
 
-function InputForm({
+function Group({
   Icon,
   id,
   isDisabled,
@@ -39,4 +39,4 @@ function InputForm({
   );
 }
 
-export default InputForm;
+export default Group;
