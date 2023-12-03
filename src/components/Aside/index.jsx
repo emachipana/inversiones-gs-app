@@ -6,6 +6,7 @@ import { BsFillPersonVcardFill } from "react-icons/bs";
 import { CgProfile } from "react-icons/cg";
 import { ImExit } from "react-icons/im";
 import { useTheme } from "../../context/theme";
+import { GiPayMoney } from "react-icons/gi";
 
 function Aside({ isOpen, setIsOpen }) {
   const { theme } = useTheme();
@@ -39,6 +40,13 @@ function Aside({ isOpen, setIsOpen }) {
           to="/prestamos"
         >
           Préstamos
+        </NavItem>
+        <NavItem 
+          setIsOpen={setIsOpen}
+          Icon={GiPayMoney}
+          to="/pandero"
+        >
+          Pandero
         </NavItem>
         <NavItem 
           setIsOpen={setIsOpen}

@@ -9,7 +9,7 @@ function Button({ children, Icon, ...args }) {
       theme={theme}
       {...args}
     >
-      { Icon && <Icon />}
+      { Icon && <Icon size={20} />}
       { children }
     </Container>
   );
