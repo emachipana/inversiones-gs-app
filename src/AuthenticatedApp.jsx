@@ -5,27 +5,38 @@ import { useTheme } from "./context/theme";
 import { Container, Section } from "./styles";
 import { Route, Routes } from "react-router-dom";
 import Calc from "./pages/Calc";
+import Loans from "./pages/Loans";
+import { DataProvider } from "./context/data";
 
 function AuthenticatedApp() {
   const [isOpen, setIsOpen] = useState(false);
   const { theme } = useTheme();
 
   return (
-    <Container>
-      <Navbar 
-        isOpen={isOpen}
-        setIsOpen={setIsOpen}
-      />
-      <Aside 
-        isOpen={isOpen}
-        setIsOpen={setIsOpen}
-      />
-      <Section theme={theme}>
-        <Routes>
-          <Route path="/calculadora" element={<Calc />} />
-        </Routes>
-      </Section>
-    </Container>
+    <DataProvider>
+      <Container>
+        <Navbar 
+          isOpen={isOpen}
+          setIsOpen={setIsOpen}
+        />
+        <Aside 
+          isOpen={isOpen}
+          setIsOpen={setIsOpen}
+        />
+        <Section theme={theme}>
+          <Routes>
+            <Route index path="/" element={<h1>Inicio</h1>} />
+            <Route path="/calculadora" element={<Calc />} />
+            <Route path="/prestamos" element={<Loans />} />
+            <Route path="/prestamos/:id" element={<h1>Id de loan</h1>} />
+            <Route path="/pandero" element={<h1>Pnadero</h1>} />
+            <Route path="/pagos" element={<h1>Pagos</h1>} />
+            <Route path="/clientes" element={<h1>Clientes</h1>} />
+            <Route path="/perfil" element={<h1>Perfil</h1>}/>
+          </Routes>
+        </Section>
+      </Container>
+    </DataProvider>
   )
 }
 
