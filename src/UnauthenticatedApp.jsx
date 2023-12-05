@@ -6,6 +6,7 @@ function UnauthenticatedApp() {
     <Routes>
       <Route index path="/" element={<Navigate to="/login" />} />
       <Route path="/login" element={<Login />} />
+      <Route path="*" element={<h1>Pagina no encontrada</h1>}/>
     </Routes>
   )
 }

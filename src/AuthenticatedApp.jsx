@@ -33,6 +33,7 @@ function AuthenticatedApp() {
             <Route path="/pagos" element={<h1>Pagos</h1>} />
             <Route path="/clientes" element={<h1>Clientes</h1>} />
             <Route path="/perfil" element={<h1>Perfil</h1>}/>
+            <Route path="*" element={<h1>Pagina no encontrada</h1>}/>
           </Routes>
         </Section>
       </Container>

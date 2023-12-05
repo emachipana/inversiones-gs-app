@@ -36,7 +36,7 @@ function Aside({ isOpen, setIsOpen }) {
         </NavItem>
         <NavItem 
           setIsOpen={setIsOpen}
-          Icon={IoDocumentTextSharp}
+          Icon={FaMoneyBillTransfer}
           to="/prestamos"
         >
           Préstamos
@@ -47,13 +47,6 @@ function Aside({ isOpen, setIsOpen }) {
           to="/pandero"
         >
           Pandero
-        </NavItem>
-        <NavItem 
-          setIsOpen={setIsOpen}
-          Icon={FaMoneyBillTransfer}
-          to="/pagos"
-        >
-          Pagos
         </NavItem>
         <NavItem 
           setIsOpen={setIsOpen}
