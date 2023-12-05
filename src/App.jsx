@@ -1,5 +1,6 @@
 import AuthenticatedApp from "./AuthenticatedApp";
 import UnauthenticatedApp from "./UnauthenticatedApp";
+import Loader from "./components/Loader";
 import { useAuth } from "./context/auth"
 
 function App() {
@@ -7,7 +8,7 @@ function App() {
 
   return (
     isLoading
-    ? "Cargando..."
+    ? <Loader />
     : (user ? <AuthenticatedApp /> : <UnauthenticatedApp />)
     
   )
