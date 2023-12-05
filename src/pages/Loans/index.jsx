@@ -4,16 +4,102 @@ import Search from "../../components/Search";
 import { useData } from "../../context/data";
 import { useTheme } from "../../context/theme";
 import { COLORS, Title } from "../../styles";
-import { Card, Container, FlexColumn, FlexRow, Name, Section, Text } from "./styles";
+import { Card, Container, FlexColumn, FlexRow, Group, Name, Section, Text } from "./styles";
 import { FaSquarePlus } from "react-icons/fa6";
 import { FaWhatsapp } from "react-icons/fa";
 import capitalize from "../../helper/capitalize";
 import { useNavigate } from "react-router-dom";
+import validate from "./validate";
+import { Formik } from "formik";
+import ModalForm from "../../components/ModalForm";
+import InputLabel from "../../components/Input/Label";
+import Select from "../../components/Input/Select";
+import generateInstallments from "../../helper/installments";
+import apiFetch from "../../services/apiFetch";
 
 function Loans() {
   const { theme } = useTheme();
-  const { loans, isLoading } = useData();
+  const {
+    loans,
+    isLoading,
+    loanModal,
+    setLoanModal,
+    setError,
+    setIsLoading,
+    setLoans,
+    payDays,
+    setPayDays } = useData();
   const navigate = useNavigate();
+  const { payType, amount, months, isOpen } = loanModal;
+
+  const toggle = (resetForm) => {
+    if(isLoading) return;
+
+    setError(null);
+    setLoanModal({...loanModal, isOpen: !isOpen});
+    if(loanModal.isOpen) resetForm();
+  }
+
+  const initialValues = {
+    payType,
+    amount,
+    months,
+    dni: "",
+    name: "",
+    last_name: "",
+    phone: "",
+    account: "",
+    cci: ""
+  }
+
+  const handleSubmit  = async (values) => {
+    setIsLoading(true);
+    const amount = parseInt(values.amount);
+
+    try {
+      const { totalPay, toPay, pays, lastPay } = generateInstallments({...values, amount});
+      const body = {
+        ...values,
+        name: values.name.toLowerCase(),
+        last_name: values.last_name.toLowerCase(),
+        amount,
+        pay_type: values.payType,
+        receive_amount: totalPay,
+        bank_account: [ values.account, values.cci ],
+        finish_date: lastPay
+      }
+
+      // create loan
+      const newLoan = await apiFetch("loans", { body });
+      const regularLoans = loans.regular;
+      regularLoans.push(newLoan);
+      setLoans((loans) => ({...loans, regular: regularLoans}));
+
+      // create pay days
+      pays.forEach(async (date) => {
+        const newPayDay = await apiFetch("paydays", {
+          body: {
+            loanId: newLoan.id,
+            dateToPay: date,
+            amount: toPay
+          }
+        });
+
+        payDays.push(newPayDay);
+        setPayDays(payDays);
+      });
+
+      setIsLoading(false);
+      setLoanModal((prev) => ({...prev, isOpen: false}));
+      setError(null)
+      navigate(`/prestamos/${newLoan.id}`);
+    }catch(e) {
+      console.error(e);
+
+      setError(e.message);
+      setIsLoading(false);
+    }
+  }
 
   return (
     <>
@@ -26,6 +112,7 @@ function Loans() {
               color="primary"
               Icon={FaSquarePlus}
               size="full"
+              onClick={toggle}
             >
               Crear préstamo
             </Button>
@@ -51,7 +138,7 @@ function Loans() {
                         size={17}
                         theme={theme}
                       >
-                        {`${loan.name} ${loan.last_name}`}
+                        {`${capitalize(loan.name)} ${capitalize(loan.last_name)}`}
                       </Text>
                       <FlexRow
                         isCard
@@ -152,6 +239,125 @@ function Loans() {
           }
         </Section>
       </Container>
+      <Formik
+        initialValues={initialValues}
+        onSubmit={handleSubmit}
+        validate={validate}
+      >
+        {({
+          values,
+          errors,
+          touched,
+          isValid,
+          handleChange,
+          handleBlur,
+          handleSubmit,
+          resetForm
+        }) => (
+          <ModalForm
+            isOpen={loanModal.isOpen}
+            title="Crear préstamo"
+            toggle={() => toggle(resetForm)}
+            isValid={isValid}
+            handleSubmit={handleSubmit}
+          >
+            <InputLabel 
+              id="dni"
+              label="DNI"
+              placeholder="12345678"
+              value={values.dni}
+              handleChange={handleChange}
+              handleBlur={handleBlur}
+              error={errors.dni}
+              touched={touched.dni}
+            />
+            <InputLabel 
+              id="name"
+              label="Nombres"
+              placeholder="John"
+              value={values.name}
+              handleChange={handleChange}
+              handleBlur={handleBlur}
+              error={errors.name}
+              touched={touched.name}
+            />
+            <InputLabel 
+              id="last_name"
+              label="Apellidos"
+              placeholder="Doe"
+              value={values.last_name}
+              handleChange={handleChange}
+              handleBlur={handleBlur}
+              error={errors.last_name}
+              touched={touched.last_name}
+            />
+            <InputLabel 
+              id="phone"
+              label="Teléfono"
+              placeholder="123456789"
+              value={values.phone}
+              handleChange={handleChange}
+              handleBlur={handleBlur}
+              error={errors.phone}
+              touched={touched.phone}
+            />
+            <Group>
+              <InputLabel 
+                id="account"
+                label="Cuenta bancaria"
+                placeholder="123456789"
+                value={values.account}
+                handleChange={handleChange}
+                handleBlur={handleBlur}
+                error={errors.account}
+                touched={touched.account}
+              />
+              <InputLabel 
+                id="cci"
+                label="CCI"
+                placeholder="123456789"
+                value={values.cci}
+                handleChange={handleChange}
+                handleBlur={handleBlur}
+                error={errors.cci}
+                touched={touched.cci}
+              />
+            </Group>
+            <Group>
+              <InputLabel 
+                id="amount"
+                label="Monto a prestar"
+                placeholder="S/. 0"
+                value={values.amount}
+                handleChange={handleChange}
+                handleBlur={handleBlur}
+                error={errors.amount}
+                touched={touched.amount}
+              />
+              <InputLabel 
+                id="months"
+                label="Meses"
+                placeholder="2"
+                value={values.months}
+                handleChange={handleChange}
+                handleBlur={handleBlur}
+                error={errors.months}
+                touched={touched.months}
+              />
+            </Group>
+            <Select 
+              id="payType"
+              label="Tipo de pago"
+              value={values.payType}
+              touched={touched.payType}
+              error={errors.payType}
+              handleBlur={handleBlur}
+              handleChange={handleChange}
+              options={["diario", "semanal"]}
+            />
+          </ModalForm>
+        )}
+      </Formik>
     </>
   )
 }

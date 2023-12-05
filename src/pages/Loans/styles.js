@@ -43,10 +43,10 @@ export const Section = styled.section`
   height: 100%;
   display: flex;
   align-items: center;
-  justify-content: ${({ isLoading }) => isLoading ? "center" : "space-between"};
+  justify-content: ${({ isLoading }) => isLoading ? "center" : "space-around"};
   flex-wrap: wrap;
   gap: 1rem;
-  padding: 1.5rem 0.5rem;
+  padding: 1.5rem 0rem;
 
   @media screen and (max-width: 1020px) {
     justify-content: center;
@@ -55,6 +55,7 @@ export const Section = styled.section`
 
 export const Card = styled.div`
   width: 320px;
+  max-height: 173px;
   border-radius: 1rem;
   background-color: ${({ theme }) => COLORS[theme].white};
   cursor: pointer;
@@ -89,4 +90,13 @@ export const Text = styled.p`
   font-size: ${({ size }) => size || 16}px;
   font-weight: ${({ weight }) => weight || 600};
   color: ${({ theme, color }) => color || COLORS[theme].white};
+  overflow: auto;
+  max-height: 25.5px;
+`;
+
+export const Group = styled.div`
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
 `;
