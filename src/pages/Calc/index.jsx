@@ -1,10 +1,10 @@
 import { Formik } from "formik";
 import { useTheme } from "../../context/theme";
-import { COLORS, Title } from "../../styles";
+import { Title } from "../../styles";
 import { Container, FlexColumn, FlexRow, Form, Section, Text } from "./styles";
 import { validate } from "./validate";
 import InputLabel from "../../components/Input/Label";
-import { FormFeedback, FormGroup, Input, Label, Spinner } from "reactstrap";
+import { Spinner } from "reactstrap";
 import Button from "../../components/Button";
 import generateInstallments from "../../helper/installments";
 import { useState } from "react";
@@ -12,6 +12,8 @@ import capitalize from "../../helper/capitalize";
 import { FaSquarePlus } from "react-icons/fa6";
 import { useNavigate } from "react-router-dom";
 import { FaCalculator } from "react-icons/fa";
+import { useData } from "../../context/data";
+import Select from "../../components/Input/Select";
 
 function Calc() {
   const [data, setData] = useState({
@@ -20,23 +22,33 @@ function Calc() {
     payType: "",
     firstPay: "",
     lastPay: "",
-    payments: 0
+    payments: 0,
+    amount: 0,
+    months: 0
   });
   const [isLoading, setIsLoading] = useState(false);
   const { theme } = useTheme();
   const navigate = useNavigate();
+  const { setLoanModal } = useData();
 
   const handleSubmit = async (values) => {
     setIsLoading(true);
-    const { totalPay, toPay, payType, firstPay, lastPay, payments } = generateInstallments({
+    const { totalPay, toPay, payType, firstPay, lastPay, payments, months, amount } = generateInstallments({
       ...values,
       amount: parseInt(values.amount)
     });
 
     setTimeout(() => {
-      setData({ totalPay, toPay, payType, firstPay, lastPay, payments });
+      setData({ totalPay, toPay, payType, firstPay, lastPay, payments, months, amount });
       setIsLoading(false)
     }, 700);
+  }
+
+  const handleClick = () => {
+    const { payType, amount, months } = data;
+    setLoanModal({ payType, amount, months, isOpen: true });
+
+    navigate("/prestamos");
   }
 
   const initialValues = { amount: "", months: "", payType: "" }
@@ -81,32 +93,16 @@ function Calc() {
                   error={errors.months}
                   touched={touched.months}
                 />
-                <FormGroup style={{width: "100%"}}>
-                  <Label
-                    style={{ fontWeight: 600, color: COLORS[theme].gray.bold }}
-                  >
-                    Selecciona el tipo de pago
-                  </Label>
-                  <Input
-                    id="payType"
-                    type="select"
-                    name="payType"
-                    value={values.payType}
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                    invalid={errors.payType && touched.payType}
-                    valid={!errors.payType && touched.payType}
-                  >
-                    <option selected disabled value="">Elige uno</option>
-                    <option value="diario">Diario</option>
-                    <option value="semanal">Semanal</option>
-                  </Input>
-                  {
-                    errors.payType && touched.payType && (
-                      <FormFeedback>{ errors.payType }</FormFeedback>
-                    )
-                  }
-                </FormGroup>
+                <Select
+                  id="payType"
+                  label="Selecciona el tipo de pago"
+                  value={values.payType}
+                  touched={touched.payType}
+                  error={errors.payType}
+                  handleBlur={handleBlur}
+                  handleChange={handleChange}
+                  options={["diario", "semanal"]}
+                />
                 <Button
                   size="full"
                   color="primary"
@@ -164,7 +160,7 @@ function Calc() {
               </FlexRow>
               <Button
                 color="primary"
-                onClick={() => navigate("/prestamos")}
+                onClick={handleClick}
                 Icon={FaSquarePlus}
               >
                 Crear préstamo

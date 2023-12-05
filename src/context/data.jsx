@@ -6,24 +6,31 @@ const DataContext = createContext();
 function DataProvider({ children }) {
   const [isLoading, setIsLoading] = useState(true);
   const [loans, setLoans] = useState([]);
-  const [pays, setPays] = useState([]);
+  const [payDays, setPayDays] = useState([]);
   const [clients, setClients] = useState({});
+  const [loanModal, setLoanModal] = useState({
+    amount: "",
+    months: "",
+    payType: "",
+    isOpen: false
+  });
   const [backup, setBackup] = useState({
     loans: [],
-    pays: [],
+    payDays: [],
     clients: {}
   });
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     const fetch = async () => {
       try {
         const loans = await apiFetch("loans");
         setLoans(loans);
-        const pays = await apiFetch("paydays");
-        setPays(pays);
+        const payDays = await apiFetch("paydays");
+        setPayDays(payDays);
         const clients = await apiFetch("users");
         setClients(clients);
-        setBackup({loans, pays, clients});
+        setBackup({loans, payDays, clients});
         setIsLoading(false);
       }catch(e) {
         console.error(e);
@@ -50,10 +57,15 @@ function DataProvider({ children }) {
       value={{
         isLoading,
         loans,
-        pays,
+        payDays,
         clients,
+        loanModal,
+        error,
+        setError,
+        setIsLoading,
+        setLoanModal,
         setLoans,
-        setPays,
+        setPayDays,
         setClients,
         setBackup,
         searchLoan
