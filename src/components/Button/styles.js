@@ -6,13 +6,13 @@ export const Container = styled.button`
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 0.5rem;
-  font-size: 17px;
+  gap: ${({ size }) => size === "sm" ? 0.3 : 0.5}rem;
+  font-size: ${({ size }) => size === "sm" ? 15 : 17}px;
   font-weight: 500;
-  background-color: ${({ color, theme }) => color === "primary" ? COLORS[theme].primary : COLORS[theme].secondary};
-  color: ${({ color, theme }) => color === "primary" ? COLORS[theme].white : COLORS[theme].primary};
+  background-color: ${({ color, theme }) => color === "primary" ? COLORS[theme].primary : (color === "danger" ? "#E05773" : COLORS[theme].secondary)};
+  color: ${({ color, theme }) => color === "primary" ? COLORS[theme].white : (color === "danger" ? "white" : COLORS[theme].primary)};
   border-radius: 12px;
-  padding: 0.6rem 1rem;
+  padding: ${({ size }) => size === "sm" ? 0.4 : 0.6}rem 1rem;
   cursor: pointer;
   transition: .2s linear;
   border: none;
