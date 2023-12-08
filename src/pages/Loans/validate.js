@@ -1,26 +1,11 @@
-import { getInfo } from "../../services/reniec";
-
-async function validate(values) {
+async function validate(values, info) {
   const errors = {};
 
-  // dni
-  if(!values.dni) {
-    errors.dni = "Este campo es obligatorio";
-  }else if((values.dni * 1).toString() === "NaN") {
-    errors.dni = "Solo se aceptan números";
-  }else if(values.dni.length > 8) {
-    errors.dni = "Solo se aceptan 8 dígitos";
-  }else if(values.dni.length === 8) {
-    const info = await getInfo(values.dni);
-    if(info.success) {
-      values.name = info.nombres;
-      values.last_name = `${info.apellidoPaterno} ${info.apellidoMaterno}`
-    }
-  }
-
   // name
-  if(!values.name) errors.name = "Este campo es obligatorio";
-  if(!values.last_name) errors.last_name = "Este campo es obligatorio";
+  if(!info.name) {
+    if(!values.name) errors.name = "Este campo es obligatorio";
+    if(!values.last_name) errors.last_name = "Este campo es obligatorio";
+  }
 
   // phone
   if(!values.phone) {
