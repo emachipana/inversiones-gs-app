@@ -4,7 +4,7 @@ import { IoIosArrowForward } from "react-icons/io";
 import { useAuth } from "../../context/auth";
 import { useTheme } from "../../context/theme";
 
-function NavItem({ Icon, children, to, isToLogout, setIsOpen }) {
+function NavItem({ Icon, children, to, isToLogout, setIsOpen, active }) {
   const { pathname} = useLocation();
   const { logout } = useAuth();
   const { theme } = useTheme();
@@ -19,7 +19,7 @@ function NavItem({ Icon, children, to, isToLogout, setIsOpen }) {
 
   return (
     <NavContainer 
-      isActive={!isToLogout && pathname === to}
+      isActive={active || (!isToLogout && pathname === to)}
       onClick={handleClick}
       theme={theme}
     >
