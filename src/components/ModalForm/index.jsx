@@ -8,7 +8,7 @@ import Button from "../Button";
 import { FaSquarePlus } from "react-icons/fa6";
 import { useData } from "../../context/data";
 
-function ModalForm({ children, toggle, isOpen, title, isValid, handleSubmit }) {
+function ModalForm({ children, toggle, isOpen, title, isValid, handleSubmit, isToUpdate }) {
   const { theme } = useTheme();
   const { isLoading, error } = useData();
 
@@ -51,9 +51,15 @@ function ModalForm({ children, toggle, isOpen, title, isValid, handleSubmit }) {
               ? <>
                   <Spinner size="sm" />
                   {" "}
-                  Creando...
+                  {
+                    isToUpdate
+                    ? "Actualizando..."
+                    : "Creando..."
+                  }
                 </>
-              : "Crear préstamo"
+              : isToUpdate
+                ? "Actualizar"
+                : "Crear"
             }
           </Button>
         </Form>
