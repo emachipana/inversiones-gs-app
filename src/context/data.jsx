@@ -52,6 +52,30 @@ function DataProvider({ children }) {
     setLoans({...backup, regular: newLoans});
   }
 
+  const updateLoan = (oldLoan, newLoan) => {
+    let regularLoans = loans.regular;
+    const index = regularLoans.indexOf(oldLoan);
+    regularLoans[index] = newLoan;
+    setLoans((loans) => ({...loans, regular: regularLoans}));
+  }
+
+  const deleteLoan = async (id) => {
+    const pays = payDays.filter((pay) => pay.loan[0] === id);
+    await apiFetch(`loans/${id}`, { method: "DELETE" });
+    pays.forEach(async (pay) => {
+      await apiFetch(`paydays/${pay.id}`, { method: "DELETE" });
+    });
+
+    const newPays = payDays.filter((pay) => pay.loan[0] !== id);
+    setPayDays(newPays);
+    
+    const regularLoans = loans.regular;
+    const loan = regularLoans.find((loan) => loan.id === id);
+    const index = regularLoans.indexOf(loan);
+    regularLoans.splice(index, 1);
+    setLoans((prev) => ({...prev, regular: regularLoans}));
+  }
+
   return (
     <DataContext.Provider
       value={{
@@ -68,7 +92,9 @@ function DataProvider({ children }) {
         setPayDays,
         setClients,
         setBackup,
-        searchLoan
+        searchLoan,
+        updateLoan,
+        deleteLoan
       }}
     >
       { children }
