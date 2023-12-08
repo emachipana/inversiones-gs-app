@@ -41,8 +41,6 @@ async function apiFetch(endpoint, { method, headers, body } = {}) {
   try {
     data = await response.json();
   }catch(e) {
-    console.error(e);
-
     data = response.statusText;
   }
 
