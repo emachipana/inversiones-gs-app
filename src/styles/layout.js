@@ -23,6 +23,7 @@ export const Section = styled.section`
   align-items: start;
   justify-content: center;
   gap: 1rem;
+  position: relative;
 
   @media screen and (max-width: 800px) {
     justify-content: start;
