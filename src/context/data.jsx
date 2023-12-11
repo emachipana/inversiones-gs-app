@@ -5,7 +5,7 @@ const DataContext = createContext();
 
 function DataProvider({ children }) {
   const [isLoading, setIsLoading] = useState(true);
-  const [loans, setLoans] = useState([]);
+  const [loans, setLoans] = useState({});
   const [payDays, setPayDays] = useState([]);
   const [clients, setClients] = useState({});
   const [loanModal, setLoanModal] = useState({
@@ -15,7 +15,7 @@ function DataProvider({ children }) {
     isOpen: false
   });
   const [backup, setBackup] = useState({
-    loans: [],
+    loans: {},
     payDays: [],
     clients: {}
   });
@@ -53,7 +53,7 @@ function DataProvider({ children }) {
   }
 
   const updateLoan = (oldLoan, newLoan) => {
-    let regularLoans = loans.regular;
+    const regularLoans = loans.regular;
     const index = regularLoans.indexOf(oldLoan);
     regularLoans[index] = newLoan;
     setLoans((loans) => ({...loans, regular: regularLoans}));
@@ -74,6 +74,15 @@ function DataProvider({ children }) {
     const index = regularLoans.indexOf(loan);
     regularLoans.splice(index, 1);
     setLoans((prev) => ({...prev, regular: regularLoans}));
+    setBackup((prev) => ({...prev, loans: {...prev.loans, regular: regularLoans}}));
+  }
+
+  const updatePayDay = async (oldPay, newPay) => {
+    const index = payDays.indexOf(oldPay);
+    payDays[index] = newPay;
+    setPayDays(payDays);
+    const loans = await apiFetch("loans");
+    setLoans(loans);
   }
 
   return (
@@ -85,6 +94,7 @@ function DataProvider({ children }) {
         clients,
         loanModal,
         error,
+        backup,
         setError,
         setIsLoading,
         setLoanModal,
@@ -94,7 +104,8 @@ function DataProvider({ children }) {
         setBackup,
         searchLoan,
         updateLoan,
-        deleteLoan
+        deleteLoan,
+        updatePayDay
       }}
     >
       { children }

@@ -3,16 +3,19 @@ import { FlexRow, NavContainer } from "./styles";
 import { IoIosArrowForward } from "react-icons/io";
 import { useAuth } from "../../context/auth";
 import { useTheme } from "../../context/theme";
+import { useData } from "../../context/data";
 
 function NavItem({ Icon, children, to, isToLogout, setIsOpen, active }) {
   const { pathname} = useLocation();
   const { logout } = useAuth();
   const { theme } = useTheme();
+  const { setLoans, backup } = useData();
   const navigate = useNavigate();
 
   const handleClick = () => {
     navigate(to);
     setIsOpen(false);
+    setLoans(backup.loans);
 
     if(isToLogout) logout();
   }

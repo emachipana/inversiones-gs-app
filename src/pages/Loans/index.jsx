@@ -42,8 +42,9 @@ function Loans() {
     setError,
     setIsLoading,
     setLoans,
-    payDays,
-    setPayDays } = useData();
+    setPayDays,
+    setBackup,
+    backup } = useData();
   const navigate = useNavigate();
   const { payType, amount, months, isOpen } = loanModal;
 
@@ -92,20 +93,20 @@ function Loans() {
       const regularLoans = loans.regular;
       regularLoans.push(newLoan);
       setLoans((loans) => ({...loans, regular: regularLoans}));
+      setBackup((prev) => ({...prev, loans: {...prev.loans, regular: regularLoans}}));
 
       // create pay days
-      pays.forEach(async (date) => {
-        const newPayDay = await apiFetch("paydays", {
+      const newPays = await Promise.all(pays.map(async (date) => {
+        return await apiFetch("paydays", {
           body: {
             loanId: newLoan.id,
             dateToPay: date,
             amount: toPay
           }
         });
+      }));
 
-        payDays.push(newPayDay);
-        setPayDays(payDays);
-      });
+      setPayDays((prev) => prev.concat(newPays));
 
       setIsLoading(false);
       setLoanModal((prev) => ({...prev, isOpen: false}));
@@ -174,6 +175,11 @@ function Loans() {
     }));
   }
 
+  const handleClick = (id) => {
+    setLoans(backup.loans);
+    navigate(`/prestamos/${id}`);
+  }
+
   return (
     <>
       <Title theme={theme}>Préstamos</Title>
@@ -202,7 +208,7 @@ function Loans() {
                 <Card
                     theme={theme}
                     key={index}
-                    onClick={() => navigate(`/prestamos/${loan.id}`)}
+                    onClick={() => handleClick(loan.id)}
                   >
                     <Name
                       theme={theme}
@@ -249,7 +255,7 @@ function Loans() {
                           weight={300}
                           color={COLORS[theme].gray.bold}
                         >
-                          {`${loan.recovered}/${loan.receive_amount}`}
+                          {`${parseFloat(loan.recovered.toFixed(2))}/${parseFloat(loan.receive_amount.toFixed(2))}`}
                         </Text>
                       </FlexColumn>
                       <FlexColumn>
