@@ -8,7 +8,7 @@ function App() {
 
   return (
     isLoading
-    ? <Loader />
+    ? <Loader isMain />
     : (user ? <AuthenticatedApp /> : <UnauthenticatedApp />)
     
   )

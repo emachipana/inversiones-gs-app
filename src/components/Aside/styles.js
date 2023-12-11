@@ -2,7 +2,7 @@ import styled from "@emotion/styled";
 import { COLORS } from "../../styles";
 
 export const Container = styled.aside`
-  height: 90.35vh;
+  height: 90.4vh;
   width: 300px;
   background-color: ${({ theme }) => COLORS[theme].white};
   box-shadow: 0px 0px 4px 4px rgba(0, 0, 0, .2);
@@ -15,7 +15,7 @@ export const Container = styled.aside`
   gap: 1rem;
   transition: .3s ease-in;
   position: sticky;
-  top: 9.65vh;
+  top: 9.6vh;
 
   @media screen and (max-width: 800px){
     top: 0;

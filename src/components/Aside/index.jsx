@@ -7,9 +7,11 @@ import { CgProfile } from "react-icons/cg";
 import { ImExit } from "react-icons/im";
 import { useTheme } from "../../context/theme";
 import { GiPayMoney } from "react-icons/gi";
+import { useLocation } from "react-router-dom";
 
 function Aside({ isOpen, setIsOpen }) {
   const { theme } = useTheme();
+  const location = useLocation();
 
   return (
     <>
@@ -38,6 +40,7 @@ function Aside({ isOpen, setIsOpen }) {
           setIsOpen={setIsOpen}
           Icon={FaMoneyBillTransfer}
           to="/prestamos"
+          active={location.pathname.includes("/prestamos")}
         >
           Préstamos
         </NavItem>
