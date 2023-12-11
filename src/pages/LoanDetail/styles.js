@@ -81,3 +81,51 @@ export const Image = styled.img`
     transform: scale(1.05);
   }
 `;
+
+// pays
+export const PaysContainer = styled.div`
+  width: 100%;
+  margin: 2rem 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  align-items: center;
+  justify-content: center;
+`;
+
+export const Divider = styled.div`
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+
+  @media screen and (max-width: 1330px) {
+    gap: 2rem;
+  }
+`;
+
+export const PaysSection = styled.section`
+  height: 100%;
+  width: 50%;
+  padding: 1rem;
+  border-top: 2px solid ${({ theme }) => COLORS[theme].gray.bold};
+  border-bottom: 2px solid ${({ theme }) => COLORS[theme].gray.bold};
+  border-left: 2px solid ${({ theme }) => COLORS[theme].gray.bold};
+  border-right: ${({ theme, isLeft }) => isLeft ? "none" : "2px solid" + COLORS[theme].gray.bold};
+  border-top-left-radius: ${({ isLeft }) => isLeft ? "1rem" : 0};
+  border-bottom-left-radius: ${({ isLeft }) => isLeft ? "1rem" : 0};
+  border-top-right-radius: ${({ isLeft }) => isLeft ? 0 : "1rem"};
+  border-bottom-right-radius: ${({ isLeft }) => isLeft ? 0 : "1rem"};
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  gap: 1rem;
+
+  @media screen and (max-width: 1330px) {
+    width: 100%;
+    height: fit-content;
+    border: 2px solid ${({ theme }) => COLORS[theme].gray.bold};
+    border-radius: 1rem;
+  }
+`;
