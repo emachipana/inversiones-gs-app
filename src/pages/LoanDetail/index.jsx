@@ -17,6 +17,7 @@ import { Formik } from "formik";
 import validate from "./validate";
 import ModalForm from "../../components/ModalForm";
 import InputLabel from "../../components/Input/Label";
+import Pays from "./Pays";
 
 function LoanDetail() {
   const [modalDelete, setModalDelete] = useState(false);
@@ -184,7 +185,7 @@ function LoanDetail() {
                   size={16}
                   weight={400}
                 >
-                  S/. { loan.recovered }
+                  S/. { parseFloat(loan.recovered.toFixed(2)) }
                 </Text>
               </FlexColumn>
               <FlexColumn>
@@ -194,7 +195,7 @@ function LoanDetail() {
                   size={16}
                   weight={400}
                 >
-                  S/. { loan.receive_amount }
+                  S/. { parseFloat(loan.receive_amount.toFixed(2)) }
                 </Text>
               </FlexColumn>
             </FlexRow>
@@ -518,6 +519,7 @@ function LoanDetail() {
             )}
           </Formik>
         </FlexRow>
+        <Pays />
       </>
   );
 }
