@@ -1,4 +1,4 @@
-async function validate(values, info) {
+function validate(values, info) {
   const errors = {};
 
   // name
