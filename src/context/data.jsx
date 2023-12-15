@@ -5,7 +5,7 @@ const DataContext = createContext();
 
 function DataProvider({ children }) {
   const [isLoading, setIsLoading] = useState(true);
-  const [loans, setLoans] = useState({});
+  const [loans, setLoans] = useState({pandero: [], regular: []});
   const [payDays, setPayDays] = useState([]);
   const [clients, setClients] = useState({});
   const [loanModal, setLoanModal] = useState({
@@ -25,9 +25,9 @@ function DataProvider({ children }) {
     const fetch = async () => {
       try {
         const loans = await apiFetch("loans");
-        setLoans(loans);
+        setLoans({pandero: loans.pandero.reverse(), regular: loans.regular.reverse()});
         const payDays = await apiFetch("paydays");
-        setPayDays(payDays);
+        setPayDays((payDays));
         const clients = await apiFetch("users");
         setClients(clients);
         setBackup({loans, payDays, clients});
@@ -77,6 +77,12 @@ function DataProvider({ children }) {
     setBackup((prev) => ({...prev, loans: {...prev.loans, regular: regularLoans}}));
   }
 
+  const searchPandero = (param) => {
+    const newPandero = backup.loans.pandero.filter(loan => loan.pandero_title.toLowerCase().includes(param.toLowerCase()));
+
+    setLoans({...backup, pandero: newPandero});
+  }
+
   const updatePayDay = async (oldPay, newPay) => {
     const index = payDays.indexOf(oldPay);
     payDays[index] = newPay;
@@ -105,7 +111,8 @@ function DataProvider({ children }) {
         searchLoan,
         updateLoan,
         deleteLoan,
-        updatePayDay
+        updatePayDay,
+        searchPandero
       }}
     >
       { children }
