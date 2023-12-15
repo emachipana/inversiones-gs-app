@@ -3,8 +3,8 @@ import { FaSquarePlus } from "react-icons/fa6";
 import Button from "../../components/Button";
 import Search from "../../components/Search";
 import { useTheme } from "../../context/theme";
-import { Title } from "../../styles";
-import { Container, FlexRow, Group } from "../Loans/styles";
+import { COLORS, Title } from "../../styles";
+import { Card, Container, FlexRow, Group, Name, Section, Text as PanderoTitle, FlexColumn } from "../Loans/styles";
 import { v4 as generateId } from "uuid";
 import { useData } from "../../context/data";
 import { Formik } from "formik";
@@ -17,6 +17,8 @@ import { Text } from "../LoanDetail/styles";
 import { IoMdPersonAdd } from "react-icons/io";
 import apiFetch from "../../services/apiFetch";
 import { useNavigate } from "react-router-dom";
+import { ClipLoader } from "react-spinners";
+import capitalize from "../../helper/capitalize";
 
 const baseValues = {
   title: "",
@@ -32,11 +34,26 @@ const baseValues = {
 function Pandero() {
   const [modal, setModal] = useState(false);
   const [initialValues, setInitialValues] = useState(baseValues);
-  const { isLoading, setIsLoading, setError, setLoans, setPayDays } = useData();
+  const { 
+    isLoading,
+    setIsLoading, 
+    setError, 
+    setLoans, 
+    setPayDays,
+    loans,
+    payDays,
+    setBackup,
+    backup } = useData();
   const { theme } = useTheme();
   const navigate = useNavigate();
 
   const persons = filterObjects(initialValues);
+  const pandero = Object.values(loans.pandero?.reduce((a, loan) => {
+    const id = loan.pandero_id;
+    if(!a[id]) a[id] = [];
+    a[id].push(loan);
+    return a;
+  }, {}));
 
   const toggle = (resetForm) => {
     if(isLoading) return;
@@ -55,6 +72,7 @@ function Pandero() {
     try {
       const data = filterObjects(values);
       const pandero_id = generateId();
+      const date = new Date(values.initialDate + "T12:00:00");
       
       // loans
       const newLoans = await Promise.all(data.map(async (val, index) => {
@@ -67,14 +85,14 @@ function Pandero() {
           amount: 0,
           isPandero: true,
           pandero_id,
-          pandero_title: values.title
+          pandero_title: values.title,
+          initial_date: date
         }
 
         return await apiFetch("loans", { body });
       }));
 
       // generate dates
-      const date = new Date(values.initialDate + "T12:00:00");
       const num_type = parseInt(values.panderoType.split(" ")[1]) === 100 ? 5 : 30;
       const pays = [];
       for(let i = 0; i < newLoans.length; i++) {
@@ -97,8 +115,9 @@ function Pandero() {
       }));
 
       payDays = [].concat(...payDays);
-      
-      setLoans((prev) => ({...prev, pandero: prev.pandero.concat(newLoans)}));
+
+      setLoans((prev) => ({...prev, pandero: newLoans.concat(prev.pandero)}));
+      setBackup((prev) => ({...prev, loans: {...loans, pandero: newLoans.concat(prev.loans.pandero)}}));
       setPayDays((prev) => prev.concat(payDays));
       setModal(!modal);
       setIsLoading(false);
@@ -126,6 +145,11 @@ function Pandero() {
     setInitialValues((prev) => ({...prev, ...newObject}));
   }
 
+  const handleRedirect = (id) => {
+    setLoans(backup.loans);
+    navigate(`/pandero/${id}`);
+  }
+
   return (
     <>
       <Title theme={theme}>Pandero</Title>
@@ -143,6 +167,114 @@ function Pandero() {
             </Button>
           </div>
         </FlexRow>
+        <Section isLoading={isLoading}>
+          {
+            isLoading
+            ? <ClipLoader
+                color={COLORS[theme].primary}
+                size={60}
+              />
+            : pandero.map((value, index) => {
+                let date = new Date(value[0].initial_date);
+                date = `${date.getFullYear()}/${date.getMonth() + 1}/${date.getDate()}`;
+                const amount = payDays.filter((pay) => pay.loan[0] === value[0].id)[0].amount;
+
+                return (
+                  <Card
+                    width={325}
+                    key={index}
+                    theme={theme}
+                    onClick={() => handleRedirect(value[0].pandero_id)}
+                  >
+                    <Name
+                      theme={theme}
+                    >
+                      <PanderoTitle
+                        size={17}
+                        theme={theme}
+                      >
+                        {capitalize(value[0].pandero_title)}
+                      </PanderoTitle>
+                    </Name>
+                    <FlexRow isCard>
+                      <FlexColumn>
+                        <Text
+                          theme={theme}
+                          size={14}
+                          weight={500}
+                          color={COLORS[theme].gray.bold}
+                        >
+                          Inicio
+                        </Text>
+                        <Text
+                          theme={theme}
+                          size={13}
+                          weight={300}
+                          color={COLORS[theme].gray.bold}
+                        >
+                          {date}
+                        </Text>
+                      </FlexColumn>
+                      <FlexColumn>
+                        <Text
+                          theme={theme}
+                          size={14}
+                          weight={500}
+                          color={COLORS[theme].gray.bold}
+                        >
+                          Personas
+                        </Text>
+                        <Text
+                          theme={theme}
+                          size={13}
+                          weight={300}
+                          color={COLORS[theme].gray.bold}
+                        >
+                          {value.length}
+                        </Text>
+                      </FlexColumn>
+                      <FlexColumn>
+                        <Text
+                          theme={theme}
+                          size={14}
+                          weight={500}
+                          color={COLORS[theme].gray.bold}
+                        >
+                          Por persona
+                        </Text>
+                        <Text
+                          theme={theme}
+                          size={13}
+                          weight={300}
+                          color={COLORS[theme].gray.bold}
+                        >
+                          S/. {amount}
+                        </Text>
+                      </FlexColumn>
+                      <FlexColumn>
+                        <Text
+                          theme={theme}
+                          size={14}
+                          weight={500}
+                          color={COLORS[theme].gray.bold}
+                        >
+                          Total
+                        </Text>
+                        <Text
+                          theme={theme}
+                          size={13}
+                          weight={300}
+                          color={COLORS[theme].gray.bold}
+                        >
+                          S/. {amount * value.length}
+                        </Text>
+                      </FlexColumn>
+                    </FlexRow>
+                  </Card>
+                )
+              })
+          }
+        </Section>
       </Container>
       <Formik
         initialValues={initialValues}
