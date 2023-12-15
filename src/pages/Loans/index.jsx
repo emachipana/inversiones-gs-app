@@ -204,7 +204,7 @@ function Loans() {
                 color={COLORS[theme].primary}
                 size={60}
               />
-            : loans.regular.map((loan, index) => (
+            : loans.regular?.map((loan, index) => (
                 <Card
                     theme={theme}
                     key={index}
@@ -255,7 +255,7 @@ function Loans() {
                           weight={300}
                           color={COLORS[theme].gray.bold}
                         >
-                          {`${parseFloat(loan.recovered.toFixed(2))}/${parseFloat(loan.receive_amount.toFixed(2))}`}
+                         {parseFloat(loan.recovered.toFixed(2))} / {parseFloat(loan.receive_amount.toFixed(2))}
                         </Text>
                       </FlexColumn>
                       <FlexColumn>
