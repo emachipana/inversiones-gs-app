@@ -48,6 +48,7 @@ function Aside({ isOpen, setIsOpen }) {
           setIsOpen={setIsOpen}
           Icon={GiPayMoney}
           to="/pandero"
+          active={location.pathname.includes("/pandero")}
         >
           Pandero
         </NavItem>
