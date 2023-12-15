@@ -204,7 +204,7 @@ function Loans() {
                 color={COLORS[theme].primary}
                 size={60}
               />
-            : loans.regular.map((loan, index) => (
+            : loans.regular?.map((loan, index) => (
                 <Card
                     theme={theme}
                     key={index}

@@ -54,7 +54,7 @@ export const Section = styled.section`
 `;
 
 export const Card = styled.div`
-  width: 320px;
+  width: ${({ width }) => width || 320}px;
   max-height: 173px;
   border-radius: 1rem;
   background-color: ${({ theme }) => COLORS[theme].white};
@@ -99,4 +99,9 @@ export const Group = styled.div`
   display: flex;
   align-items: center;
   gap: 1.5rem;
+
+  @media screen and (max-width: 450px) {
+    flex-wrap: wrap;
+    gap: 0;
+  }
 `;
