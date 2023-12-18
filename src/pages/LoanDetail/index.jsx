@@ -43,7 +43,7 @@ function LoanDetail() {
   const { id } = useParams();
   const navigate = useNavigate();
   const loan = loans.regular?.find((loan) => loan.id === id);
-  if(!loan) return navigate("/prestamos");
+  if(loans.regular.length > 0 && !loan) return navigate("/prestamos");
   const today = new Date();
   today.setHours(0, 0, 0, 0);
   const finish_date = new Date(loan?.finish_date);

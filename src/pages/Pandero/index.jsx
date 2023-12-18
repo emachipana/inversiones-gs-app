@@ -102,19 +102,15 @@ function Pandero() {
       }
 
       // generate pay days
-      let payDays = await Promise.all(newLoans.map(async (loan) => {
-        return await Promise.all(pays.map(async (pay) => {
-          const body = {
-            loanId: loan.id,
-            dateToPay: pay,
-            amount: parseInt(values.panderoType.split(" ")[1])
-          }
+      const payDays = await Promise.all(pays.map(async (pay) => {
+        const body = {
+          loanId: newLoans[0].id,
+          dateToPay: pay,
+          amount: parseInt(values.panderoType.split(" ")[1])
+        }
 
-          return await apiFetch("paydays", { body });
-        }));
+        return await apiFetch("paydays", { body });
       }));
-
-      payDays = [].concat(...payDays);
 
       setLoans((prev) => ({...prev, pandero: newLoans.concat(prev.pandero)}));
       setBackup((prev) => ({...prev, loans: {...loans, pandero: newLoans.concat(prev.loans.pandero)}}));
@@ -176,8 +172,9 @@ function Pandero() {
               />
             : pandero.map((value, index) => {
                 let date = new Date(value[0].initial_date);
-                date = `${date.getFullYear()}/${date.getMonth() + 1}/${date.getDate()}`;
-                const amount = payDays.filter((pay) => pay.loan[0] === value[0].id)[0].amount;
+                date = `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`;
+                const loan = value.find((loan) => loan.id === payDays.find((pay) => pay.loan[0] === loan.id)?.loan[0]);
+                const amount = payDays.filter((pay) => pay.loan[0] === loan.id)[0].amount;
 
                 return (
                   <Card

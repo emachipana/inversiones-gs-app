@@ -19,7 +19,7 @@ function Pays() {
   const { id } = useParams();
   const { payDays, updatePayDay, loans } = useData();
   const loan = loans.regular?.find((loan) => loan.id === id);
-  const pays = payDays.filter((pay) => pay.loan[0] === loan.id); // aqui el error, corregir api
+  const pays = payDays.filter((pay) => pay.loan[0] === loan.id);
   const format = pays.map((pay) => ({...pay, dateToPay: new Date(pay.dateToPay)}));
   const paysPaid = format.filter((pay) => pay.isPaid).sort((a, b) => b.dateToPay - a.dateToPay);
   const paysNotPaid = format.filter((pay) => !pay.isPaid).sort((a, b) => a.dateToPay - b.dateToPay);
@@ -71,7 +71,6 @@ function Pays() {
             striped
             dark={theme === "dark"}
             style={{width: "100%"}}
-            
           >
             <thead>
               <tr>
@@ -110,6 +109,7 @@ function Pays() {
                           theme={theme}
                           size={15}
                           weight={500}
+                          style={{minWidth: "150px"}}
                         >
                           {date}
                         </Text>
@@ -128,6 +128,7 @@ function Pays() {
                           color="primary"
                           size="sm"
                           onClick={() => handleClick(pay)}
+                          style={{margin: "auto"}}
                         >
                           ¿Pagó?
                         </Button>
@@ -192,6 +193,7 @@ function Pays() {
                           theme={theme}
                           size={15}
                           weight={500}
+                          style={{minWidth: "150px"}}
                         >
                           {date}
                         </Text>
