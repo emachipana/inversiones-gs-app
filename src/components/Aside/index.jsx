@@ -1,7 +1,7 @@
 import NavItem from "./NavItem";
 import { BackDrop, Container } from "./styles";
-import { IoHome, IoCalculator, IoDocumentTextSharp } from "react-icons/io5";
-import { FaMoneyBillTransfer } from "react-icons/fa6";
+import { IoHome, IoCalculator } from "react-icons/io5";
+import { FaMoneyBillTransfer, FaMoneyBillTrendUp } from "react-icons/fa6";
 import { BsFillPersonVcardFill } from "react-icons/bs";
 import { CgProfile } from "react-icons/cg";
 import { ImExit } from "react-icons/im";
@@ -54,10 +54,10 @@ function Aside({ isOpen, setIsOpen }) {
         </NavItem>
         <NavItem 
           setIsOpen={setIsOpen}
-          Icon={BsFillPersonVcardFill}
-          to="/clientes"
+          Icon={FaMoneyBillTrendUp}
+          to="/refinanciamiento"
         >
-          Clientes
+          Refinanciamiento
         </NavItem>
         <NavItem 
           setIsOpen={setIsOpen}
