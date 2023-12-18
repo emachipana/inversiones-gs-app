@@ -59,6 +59,23 @@ function DataProvider({ children }) {
     setLoans((loans) => ({...loans, regular: regularLoans}));
   }
 
+  const updatePandero = (oldLoan, newLoan) => {
+    const pandero = loans.pandero;
+    const index = pandero.indexOf(oldLoan);
+    pandero[index] = newLoan;
+    setLoans((loans) => ({...loans, pandero}));
+  }
+
+  const deletePandero = async (id) => {
+    await apiFetch(`loans/${id}`, { method: "DELETE" });
+    const pandero = loans.pandero;
+    const oldLoan = pandero.find((loan) => loan.id === id);
+    const index = pandero.indexOf(oldLoan);
+    pandero.splice(index, 1);
+    setLoans((prev) => ({...prev, pandero: pandero}));
+    setBackup((prev) => ({...prev, loans: {...prev.loans, pandero: pandero}}));
+  }
+
   const deleteLoan = async (id) => {
     const pays = payDays.filter((pay) => pay.loan[0] === id);
     await apiFetch(`loans/${id}`, { method: "DELETE" });
@@ -112,7 +129,9 @@ function DataProvider({ children }) {
         updateLoan,
         deleteLoan,
         updatePayDay,
-        searchPandero
+        searchPandero,
+        updatePandero,
+        deletePandero
       }}
     >
       { children }

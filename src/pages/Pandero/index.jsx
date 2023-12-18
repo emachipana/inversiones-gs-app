@@ -172,8 +172,8 @@ function Pandero() {
               />
             : pandero.map((value, index) => {
                 let date = new Date(value[0].initial_date);
-                date = `${date.getFullYear()}/${date.getMonth() + 1}/${date.getDate()}`;
-                const loan = value.find((loan) => loan.id === payDays.find((pay) => pay.loan[0] === loan.id).loan[0]);
+                date = `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`;
+                const loan = value.find((loan) => loan.id === payDays.find((pay) => pay.loan[0] === loan.id)?.loan[0]);
                 const amount = payDays.filter((pay) => pay.loan[0] === loan.id)[0].amount;
 
                 return (
