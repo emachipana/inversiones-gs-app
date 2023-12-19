@@ -8,6 +8,7 @@ import Button from "../../components/Button";
 import { useData } from "../../context/data";
 import apiFetch from "../../services/apiFetch";
 import { useParams } from "react-router-dom";
+import { useAuth } from "../../context/auth";
 
 function Pays() {
   const [modalUpdate, setModalUpdate] = useState({
@@ -17,6 +18,7 @@ function Pays() {
   const [isLoading, setIsLoading] = useState(false);
   const { theme } = useTheme();
   const { id } = useParams();
+  const { setUser } = useAuth();
   const { payDays, updatePayDay, loans } = useData();
   const loan = loans.regular?.find((loan) => loan.id === id);
   const pays = payDays.filter((pay) => pay.loan[0] === loan.id);
@@ -38,6 +40,8 @@ function Pays() {
       const oldPay = pays.find((pay) => pay.id === modalUpdate.pay.id);
       const payUpdated = await apiFetch(`paydays/${modalUpdate.pay.id}`, { body: { isPaid: true }, method: "PATCH" });
       await updatePayDay(oldPay, payUpdated);
+      const newUser = await apiFetch("users/profile/info");
+      setUser(newUser);
       setIsLoading(false);
       setModalUpdate((prev) => ({ ...prev, isOpen: false }));
     }catch(e) {

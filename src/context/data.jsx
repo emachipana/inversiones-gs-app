@@ -106,6 +106,7 @@ function DataProvider({ children }) {
     setPayDays(payDays);
     const loans = await apiFetch("loans");
     setLoans(loans);
+    setBackup((prev) => ({...prev, loans}));
   }
 
   return (
