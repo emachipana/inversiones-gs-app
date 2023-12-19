@@ -10,6 +10,7 @@ import { DataProvider } from "./context/data";
 import LoanDetail from "./pages/LoanDetail";
 import Pandero from "./pages/Pandero";
 import PanderoDetail from "./pages/PanderoDetail";
+import Profile from "./pages/Profile";
 
 function AuthenticatedApp() {
   const [isOpen, setIsOpen] = useState(false);
@@ -35,8 +36,8 @@ function AuthenticatedApp() {
             <Route path="/pandero" element={<Pandero />} />
             <Route path="/pandero/:id" element={<PanderoDetail />} />
             <Route path="/refinanciamiento" element={<h1>refinanciamiento</h1>} />
-            <Route path="/perfil" element={<h1>Perfil</h1>}/>
-            <Route path="*" element={<h1>Pagina no encontrada</h1>}/>
+            <Route path="/perfil" element={<Profile />} />
+            <Route path="*" element={<h1>Pagina no encontrada</h1>} />
           </Routes>
         </Section>
       </Container>
