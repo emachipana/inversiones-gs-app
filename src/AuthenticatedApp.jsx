@@ -11,6 +11,7 @@ import LoanDetail from "./pages/LoanDetail";
 import Pandero from "./pages/Pandero";
 import PanderoDetail from "./pages/PanderoDetail";
 import Profile from "./pages/Profile";
+import Home from "./pages/Home";
 
 function AuthenticatedApp() {
   const [isOpen, setIsOpen] = useState(false);
@@ -29,7 +30,7 @@ function AuthenticatedApp() {
         />
         <Section theme={theme}>
           <Routes>
-            <Route index path="/" element={<h1>Inicio</h1>} />
+            <Route index path="/" element={<Home />} />
             <Route path="/calculadora" element={<Calc />} />
             <Route path="/prestamos" element={<Loans />} />
             <Route path="/prestamos/:id" element={<LoanDetail />} />
