@@ -48,7 +48,7 @@ function Pandero() {
   const navigate = useNavigate();
 
   const persons = filterObjects(initialValues);
-  const pandero = Object.values(loans.pandero?.reduce((a, loan) => {
+  const pandero = loans.pandero && Object.values(loans.pandero?.reduce((a, loan) => {
     const id = loan.pandero_id;
     if(!a[id]) a[id] = [];
     a[id].push(loan);
