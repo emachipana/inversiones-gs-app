@@ -9,10 +9,11 @@ function NavItem({ Icon, children, to, isToLogout, setIsOpen, active }) {
   const { pathname} = useLocation();
   const { logout } = useAuth();
   const { theme } = useTheme();
-  const { setLoans, backup } = useData();
+  const { setLoans, backup, isLoading } = useData();
   const navigate = useNavigate();
 
   const handleClick = () => {
+    if(isLoading) return;
     navigate(to);
     setIsOpen(false);
     setLoans(backup.loans);
