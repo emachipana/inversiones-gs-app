@@ -83,7 +83,7 @@ function Pays() {
                     theme={theme}
                     color={COLORS[theme].primary}
                     size={19}
-                    weight={700}
+                    weight={600}
                   >
                     Fecha
                   </Text>
@@ -93,7 +93,7 @@ function Pays() {
                     theme={theme}
                     color={COLORS[theme].primary}
                     size={19}
-                    weight={700}
+                    weight={600}
                   >
                     Monto
                   </Text>
@@ -159,7 +159,6 @@ function Pays() {
             striped
             dark={theme === "dark"}
             style={{width: "100%"}}
-            
           >
             <thead>
               <tr>
@@ -168,7 +167,7 @@ function Pays() {
                     theme={theme}
                     color={COLORS[theme].primary}
                     size={19}
-                    weight={700}
+                    weight={600}
                   >
                     Fecha
                   </Text>
@@ -178,7 +177,7 @@ function Pays() {
                     theme={theme}
                     color={COLORS[theme].primary}
                     size={19}
-                    weight={700}
+                    weight={600}
                   >
                     Monto
                   </Text>

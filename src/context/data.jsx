@@ -7,7 +7,6 @@ function DataProvider({ children }) {
   const [isLoading, setIsLoading] = useState(true);
   const [loans, setLoans] = useState({pandero: [], regular: []});
   const [payDays, setPayDays] = useState([]);
-  const [clients, setClients] = useState({});
   const [loanModal, setLoanModal] = useState({
     amount: "",
     months: "",
@@ -28,9 +27,7 @@ function DataProvider({ children }) {
         setLoans({pandero: loans.pandero.reverse(), regular: loans.regular.reverse()});
         const payDays = await apiFetch("paydays");
         setPayDays((payDays));
-        const clients = await apiFetch("users");
-        setClients(clients);
-        setBackup({loans, payDays, clients});
+        setBackup({loans, payDays});
         setIsLoading(false);
       }catch(e) {
         console.error(e);
@@ -115,7 +112,6 @@ function DataProvider({ children }) {
         isLoading,
         loans,
         payDays,
-        clients,
         loanModal,
         error,
         backup,
@@ -124,7 +120,6 @@ function DataProvider({ children }) {
         setLoanModal,
         setLoans,
         setPayDays,
-        setClients,
         setBackup,
         searchLoan,
         updateLoan,
