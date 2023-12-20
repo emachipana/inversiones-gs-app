@@ -43,10 +43,9 @@ function Home() {
   // overdue loan
   const today = new Date();
   today.setHours(0, 0, 0, 0);
-  let over_loan = loans.regular?.map((loan) => ({...loan, finish_date: new Date(loan.finish_date)}));
-  over_loan = over_loan.map((loan) => loan.finish_date < today);
-
-  const over_data = over_loan.filter((data) => data).length;
+  let over_data = loans.regular?.map((loan) => ({...loan, finish_date: new Date(loan.finish_date)}));
+  over_data = over_data.filter((loan) => !loan.isPaid);
+  over_data = over_data.filter((loan) => loan.finish_date < today).length;
 
   // clients
   const pending_clients = loans.regular?.map((loan) => {
