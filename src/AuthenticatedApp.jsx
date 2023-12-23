@@ -12,6 +12,8 @@ import Pandero from "./pages/Pandero";
 import PanderoDetail from "./pages/PanderoDetail";
 import Profile from "./pages/Profile";
 import Home from "./pages/Home";
+import Refinancing from "./pages/Refinancing";
+import RefinancingDetail from "./pages/RefinancingDetail";
 
 function AuthenticatedApp() {
   const [isOpen, setIsOpen] = useState(false);
@@ -36,7 +38,8 @@ function AuthenticatedApp() {
             <Route path="/prestamos/:id" element={<LoanDetail />} />
             <Route path="/pandero" element={<Pandero />} />
             <Route path="/pandero/:id" element={<PanderoDetail />} />
-            <Route path="/refinanciamiento" element={<h1>refinanciamiento</h1>} />
+            <Route path="/refinanciamiento" element={<Refinancing />} />
+            <Route path="/refinanciamiento/:id" element={<RefinancingDetail />} />
             <Route path="/perfil" element={<Profile />} />
             <Route path="*" element={<h1>Pagina no encontrada</h1>} />
           </Routes>
