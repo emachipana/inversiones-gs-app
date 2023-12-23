@@ -48,7 +48,8 @@ function Home() {
   over_data = over_data.filter((loan) => loan.finish_date < today).length;
 
   // clients
-  const pending_clients = loans.regular?.map((loan) => {
+  let pending_clients = loans.regular?.filter((loan) => !loan.isPaid);
+  pending_clients = pending_clients.map((loan) => {
     let pays = payDays.filter((pay) => pay.loan[0] === loan.id);
     pays = pays.map((pay) => ({...pay, dateToPay: new Date(pay.dateToPay)}));
     pays = pays.sort((a, b) => a.dateToPay - b.dateToPay);

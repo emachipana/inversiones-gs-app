@@ -42,7 +42,7 @@ export const Section = styled.section`
   width: 100%;
   height: 100%;
   display: flex;
-  align-items: ${({ align }) => align || "center"};
+  align-items: ${({ isLoading, align }) => isLoading ? "center" : (align || "center")};
   justify-content: ${({ isLoading }) => isLoading ? "center" : "space-around"};
   flex-wrap: wrap;
   gap: 1rem;

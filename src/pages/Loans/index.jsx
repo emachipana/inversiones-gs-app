@@ -72,10 +72,11 @@ function Loans() {
 
   const handleSubmit  = async (values) => {
     setIsLoading(true);
-    const amount = parseInt(values.amount);
-
+    
     try {
+      const amount = parseInt(values.amount);
       const { totalPay, toPay, pays, lastPay } = generateInstallments({...values, amount});
+
       const body = {
         ...values,
         dni: info.dni,
