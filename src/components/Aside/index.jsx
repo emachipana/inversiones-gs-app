@@ -56,6 +56,7 @@ function Aside({ isOpen, setIsOpen }) {
           setIsOpen={setIsOpen}
           Icon={FaMoneyBillTrendUp}
           to="/refinanciamiento"
+          active={location.pathname.includes("/refinanciamiento")}
         >
           Refinanciamiento
         </NavItem>
