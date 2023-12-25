@@ -19,6 +19,7 @@ function DataProvider({ children }) {
     clients: {}
   });
   const [error, setError] = useState(null);
+  const [notifications, setNotifications] = useState([]);
 
   useEffect(() => {
     const fetch = async () => {
@@ -61,6 +62,7 @@ function DataProvider({ children }) {
     const index = pandero.indexOf(oldLoan);
     pandero[index] = newLoan;
     setLoans((loans) => ({...loans, pandero}));
+    setBackup((prev) => ({...prev, loans: {...prev.loans, pandero}}));
   }
 
   const deletePandero = async (id) => {
@@ -115,6 +117,8 @@ function DataProvider({ children }) {
         loanModal,
         error,
         backup,
+        notifications,
+        setNotifications,
         setError,
         setIsLoading,
         setLoanModal,
