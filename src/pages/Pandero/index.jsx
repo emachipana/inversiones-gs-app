@@ -13,7 +13,7 @@ import ModalForm from "../../components/ModalForm";
 import InputLabel from "../../components/Input/Label";
 import Select from "../../components/Input/Select";
 import filterObjects from "../../helper/filterObjects";
-import { Text } from "../LoanDetail/styles";
+import { Badge, Text } from "../LoanDetail/styles";
 import { IoMdPersonAdd } from "react-icons/io";
 import apiFetch from "../../services/apiFetch";
 import { useNavigate } from "react-router-dom";
@@ -175,10 +175,10 @@ function Pandero() {
                 date = `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`;
                 const loan = value.find((loan) => loan.id === payDays.find((pay) => pay.loan[0] === loan.id)?.loan[0]);
                 const amount = payDays.filter((pay) => pay.loan[0] === loan.id)[0].amount;
+                const pending = value.filter((loan) => !loan.isDelivered);
 
                 return (
                   <Card
-                    width={325}
                     key={index}
                     theme={theme}
                     onClick={() => handleRedirect(value[0].pandero_id)}
@@ -195,22 +195,32 @@ function Pandero() {
                     </Name>
                     <FlexRow isCard>
                       <FlexColumn>
-                        <Text
-                          theme={theme}
-                          size={14}
-                          weight={500}
-                          color={COLORS[theme].gray.bold}
-                        >
-                          Inicio
-                        </Text>
-                        <Text
-                          theme={theme}
-                          size={13}
-                          weight={300}
-                          color={COLORS[theme].gray.bold}
-                        >
-                          {date}
-                        </Text>
+                        {
+                          pending.length <= 0
+                          ? <Badge
+                              status="pagado"
+                            >
+                              Finalizado
+                            </Badge>
+                          : <>
+                            <Text
+                              theme={theme}
+                              size={14}
+                              weight={500}
+                              color={COLORS[theme].gray.bold}
+                            >
+                              Inicio
+                            </Text>
+                            <Text
+                              theme={theme}
+                              size={13}
+                              weight={300}
+                              color={COLORS[theme].gray.bold}
+                            >
+                              {date}
+                            </Text>
+                            </>
+                        }
                       </FlexColumn>
                       <FlexColumn>
                         <Text
@@ -237,7 +247,7 @@ function Pandero() {
                           weight={500}
                           color={COLORS[theme].gray.bold}
                         >
-                          Por persona
+                          Monto
                         </Text>
                         <Text
                           theme={theme}
