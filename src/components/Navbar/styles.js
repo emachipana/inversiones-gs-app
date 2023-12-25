@@ -95,9 +95,9 @@ export const NotiItem = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
-  gap: 2px;
+  gap: 3px;
   border-left: 6px solid ${({ theme }) => COLORS[theme].primary};
-  padding: 2px 6px 4px 6px;
+  padding: 0 6px;
   cursor: pointer;
   transition: .3s ease-in;
 
@@ -108,8 +108,8 @@ export const NotiItem = styled.div`
 
 export const Text = styled.h3`
   font-size: ${({ size }) => size || 17}px;
+  font-weight: ${({ weight }) => weight || 400};
   color: ${({ isTitle, color, theme }) => color || (isTitle ? COLORS[theme].primary : COLORS[theme].gray.bold)};
-  white-space: nowrap;
 `;
 
 export const Badge = styled.div`

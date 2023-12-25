@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Alert, Badge, Container, FlexRow, Name, NotiItem, Notifications, Text } from "./styles";
 import { RiExchangeDollarLine } from "react-icons/ri";
 import { IoNotifications, IoClose } from "react-icons/io5";
@@ -8,50 +8,60 @@ import { useNavigate } from "react-router-dom";
 import { HiOutlineBars3BottomLeft } from "react-icons/hi2";
 import { useTheme } from "../../context/theme";
 import { MdLightMode, MdDarkMode } from "react-icons/md";
+import { useData } from "../../context/data";
+import capitalize from "../../helper/capitalize";
 
 function Navbar({ isOpen, setIsOpen }) {
   const [dropDownOpen, setDropDownOpen] = useState(false);
   const navigate = useNavigate();
   const { theme, changeTheme } = useTheme();
+  const { notifications, loans, payDays, setNotifications, backup } = useData();
 
-  // fort testing
-  const notifications = [
-    {
-      name: "Enmanuel Chipana Araujo",
-      next_pay_date: "2023-11-24T15:37:24.544Z",
-      next_pay_amount: 250
-    },
-    {
-      name: "Nicer Nimer Jauregui Gerardini",
-      next_pay_date: "2023-11-24T15:37:24.544Z",
-      next_pay_amount: 250
-    },
-    {
-      name: "Enmanuel Chipana Araujo",
-      next_pay_date: "2023-11-24T15:37:24.544Z",
-      next_pay_amount: 250
-    },
-    {
-      name: "Enmanuel Chipana Araujo",
-      next_pay_date: "2023-11-25T15:37:24.544Z",
-      next_pay_amount: 250
-    },
-    {
-      name: "Enmanuel Chipana Araujo",
-      next_pay_date: "2023-11-25T15:37:24.544Z",
-      next_pay_amount: 250
-    },
-    {
-      name: "Enmanuel Chipana Araujo",
-      next_pay_date: "2023-11-25T15:37:24.544Z",
-      next_pay_amount: 250
-    },
-    {
-      name: "Enmanuel Chipana Araujo",
-      next_pay_date: "2023-11-25T15:37:24.544Z",
-      next_pay_amount: 250
-    }
-  ];
+  useEffect(() => {
+    const today = new Date();
+    const tomorrow = new Date();
+    tomorrow.setDate(tomorrow.getDate() + 1);
+    let dataNoti = payDays.filter((pay) => !pay.isPaid);
+    dataNoti = dataNoti.map((pay) => ({...pay, dateToPay: new Date(pay.dateToPay)}));
+    dataNoti = dataNoti.filter((pay) => {
+      return (
+        pay.dateToPay.getDate() === today.getDate() && pay.dateToPay.getMonth() === today.getMonth() && pay.dateToPay.getFullYear() === today.getFullYear() ||
+        pay.dateToPay.getDate() === tomorrow.getDate() && pay.dateToPay.getMonth() === tomorrow.getMonth() && pay.dateToPay.getFullYear() === tomorrow.getFullYear()  
+      )
+    });
+    dataNoti = dataNoti.map((pay) => {
+      let loan = backup.loans.pandero?.find((loan) => loan.id === pay.loan[0]);
+      loan = loan ? loan : backup.loans.regular?.find((loan) => loan.id === pay.loan[0]);
+
+      const isPandero = loan?.isPandero || false;
+      if(isPandero) {
+        let group = backup.loans.pandero.filter((value) => value.pandero_id === loan.pandero_id).sort((a, b) => a.pandero_position - b.pandero_position);
+        let pays = payDays.filter((pay) => pay.loan[0] === loan.id);
+        pays = pays.map((pay) => ({...pay, dateToPay: new Date(pay.dateToPay)})).sort((a, b) => a.dateToPay - b.dateToPay);
+        group = group.map((value, index) => ({...value, pandero_date: pays[index]?.dateToPay, pay_id: pays[index]?.id}));
+        const next_pay = group.find((value) => value.pay_id === pay.id);
+        if(next_pay.isDelivered) return null;
+
+        return {
+          id: loan.pandero_id,
+          name: `${next_pay.name} ${next_pay.last_name}`,
+          next_pay_date: next_pay.pandero_date,
+          next_pay_amount: group.length * pay.amount,
+          isPandero: true
+        };
+      }
+
+      return {
+        id: loan?.isPandero ? loan.pandero_id : loan?.id,
+        name: `${loan?.name} ${loan?.last_name}`,
+        next_pay_date: pay.dateToPay,
+        next_pay_amount: pay.amount,
+        isPandero: loan?.isPandero || false
+      };
+    }).filter((value) => value !== null).sort((a, b) => a.next_pay_date - b.next_pay_date).filter((value) => value.id !== undefined);
+
+    setNotifications(dataNoti);
+  }, [loans, payDays, backup]);
 
   return (
     <Container theme={theme}>
@@ -83,20 +93,51 @@ function Navbar({ isOpen, setIsOpen }) {
           </DropdownToggle>
           <DropdownMenu
             end
-            style={{ marginTop: "18px", width: "230px", maxHeight: "350px", overflow: "auto", backgroundColor: COLORS[theme].white}}
+            style={{ marginTop: "18px", width: "280px", maxHeight: "350px", overflow: "auto", backgroundColor: COLORS[theme].white}}
           >
             <Notifications>
-              <Text isTitle theme={theme}>Pagos pendientes</Text>
+              <Text 
+                isTitle 
+                weight={600}
+                theme={theme}
+                size={18}
+              >
+                Pagos pendientes
+              </Text>
               {
                 notifications.length <= 0
                 ? "Sin nada por ahora!"
                 : notifications.map((noti, index) => {
                     const date = new Date();
-                    const isToday = date.getDate() === new Date(noti.next_pay_date).getDate();
+                    const isToday = date.getDate() === noti.next_pay_date.getDate();
 
                     return (
-                      <NotiItem key={index} isToday={isToday} theme={theme}>
-                        <Text theme={theme} size={15}> { noti.name } </Text>
+                      <NotiItem 
+                        key={index} 
+                        isToday={isToday} 
+                        theme={theme}
+                        onClick={() => navigate(`${noti.isPandero ? "pandero" : "prestamos"}/${noti.id}`)}
+                      >
+                        <Text
+                          theme={theme}
+                          size={17.5}
+                          weight={500}
+                          isTitle
+                        >
+                          {noti.isPandero ? "Pandero" : "Préstamo"}
+                        </Text> 
+                        <Text 
+                          theme={theme} 
+                          size={15}
+                        >
+                          { 
+                            noti.isPandero
+                            ? <>
+                                <b>Beneficiario: </b>{capitalize(noti.name)}
+                              </>
+                            : capitalize(noti.name)
+                          } 
+                        </Text>
                         <FlexRow justify="space-between" theme={theme}>
                           <Badge
                             isToday={isToday}
