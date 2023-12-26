@@ -14,6 +14,7 @@ import Profile from "./pages/Profile";
 import Home from "./pages/Home";
 import Refinancing from "./pages/Refinancing";
 import RefinancingDetail from "./pages/RefinancingDetail";
+import NotFound from "./pages/404";
 
 function AuthenticatedApp() {
   const [isOpen, setIsOpen] = useState(false);
@@ -41,7 +42,7 @@ function AuthenticatedApp() {
             <Route path="/refinanciamiento" element={<Refinancing />} />
             <Route path="/refinanciamiento/:id" element={<RefinancingDetail />} />
             <Route path="/perfil" element={<Profile />} />
-            <Route path="*" element={<h1>Pagina no encontrada</h1>} />
+            <Route path="*" element={<NotFound />} />
           </Routes>
         </Section>
       </Container>
