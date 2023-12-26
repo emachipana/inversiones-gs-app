@@ -16,7 +16,8 @@ export const FlexRow = styled.div`
   align-items: center;
   justify-content: ${({ justify }) => justify || "space-between"};
   gap: ${({ gap }) => gap || 0}rem;
-  flex-wrap: wrap;
+  flex-wrap: ${({ isCard }) => isCard ? "no-wrap" : "wrap"};
+
   @media screen and (max-width: 840px) {
     ${({ isCard }) => 
       !isCard
@@ -34,8 +35,7 @@ export const FlexColumn = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 2px;
-  padding: 4px;
+  padding: 0 2px;
 `;
 
 export const Section = styled.section`
@@ -55,7 +55,7 @@ export const Section = styled.section`
 
 export const Card = styled.div`
   width: ${({ width }) => width || 320}px;
-  max-height: 173px;
+  max-height: 170px;
   border-radius: 1rem;
   background-color: ${({ theme }) => COLORS[theme].white};
   cursor: pointer;

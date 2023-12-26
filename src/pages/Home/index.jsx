@@ -51,6 +51,7 @@ function Home() {
   let pending_clients = loans.regular?.filter((loan) => !loan.isPaid);
   pending_clients = pending_clients.map((loan) => {
     let pays = payDays.filter((pay) => pay.loan[0] === loan.id);
+    pays = pays.filter((pay) => !pay.isPaid);
     pays = pays.map((pay) => ({...pay, dateToPay: new Date(pay.dateToPay)}));
     pays = pays.sort((a, b) => a.dateToPay - b.dateToPay);
 

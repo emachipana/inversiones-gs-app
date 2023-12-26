@@ -19,6 +19,7 @@ function DataProvider({ children }) {
     clients: {}
   });
   const [error, setError] = useState(null);
+  const [notifications, setNotifications] = useState([]);
 
   useEffect(() => {
     const fetch = async () => {
@@ -37,7 +38,37 @@ function DataProvider({ children }) {
     }
 
     fetch();
+    const today = new Date();
+    const yesterday = new Date();
+    yesterday.setDate(yesterday.getDate() - 1);
+
+    localStorage.removeItem(yesterday.getDate());
+    const confirm = localStorage.getItem(today.getDate());
+    if(!confirm) {
+      localStorage.setItem(today.getDate(), false);
+    }
   }, []);
+
+  useEffect(() => {
+    const sendEmail = async () => {
+      const today = new Date();
+
+      try {
+        const confirm = localStorage.getItem(today.getDate());
+        if(confirm === "true" || notifications.length === 0) return;
+
+        const { id } = await apiFetch("emails/send", { body: { notifications } });
+ 
+        if(id) localStorage.setItem(today.getDate(), true);
+      }catch(e) {
+        console.error(e);
+
+        localStorage.setItem(today.getDate(), false);
+      }
+    }
+
+    sendEmail();
+  }, [ notifications ])
 
   const searchLoan = (param) => {
     const newLoans = backup.loans.regular.filter(loan => {
@@ -61,6 +92,7 @@ function DataProvider({ children }) {
     const index = pandero.indexOf(oldLoan);
     pandero[index] = newLoan;
     setLoans((loans) => ({...loans, pandero}));
+    setBackup((prev) => ({...prev, loans: {...prev.loans, pandero}}));
   }
 
   const deletePandero = async (id) => {
@@ -115,6 +147,8 @@ function DataProvider({ children }) {
         loanModal,
         error,
         backup,
+        notifications,
+        setNotifications,
         setError,
         setIsLoading,
         setLoanModal,

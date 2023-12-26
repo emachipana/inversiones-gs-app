@@ -18,6 +18,7 @@ import Select from "../../components/Input/Select";
 import generateInstallments from "../../helper/installments";
 import apiFetch from "../../services/apiFetch";
 import { getInfo } from "../../services/reniec";
+import { Badge } from "../LoanDetail/styles";
 
 const infoBase = {
   dni: "",
@@ -79,9 +80,9 @@ function Loans() {
 
       const body = {
         ...values,
-        dni: info.dni,
-        name: info.name.toLowerCase(),
-        last_name: info.last_name.toLowerCase(),
+        dni: info.dni || values.dni,
+        name: info.name.toLowerCase() || values.name.toLowerCase(),
+        last_name: info.last_name.toLowerCase() || values.last_name.toLowerCase(),
         amount,
         pay_type: values.payType,
         receive_amount: totalPay,
@@ -242,22 +243,32 @@ function Loans() {
                       isCard
                     >
                       <FlexColumn>
-                        <Text
-                          theme={theme}
-                          size={14}
-                          weight={500}
-                          color={COLORS[theme].gray.bold}
-                        >
-                          Deuda S/.
-                        </Text>
-                        <Text
-                          theme={theme}
-                          size={13}
-                          weight={300}
-                          color={COLORS[theme].gray.bold}
-                        >
-                         {parseFloat(loan.recovered.toFixed(2))} / {parseFloat(loan.receive_amount.toFixed(2))}
-                        </Text>
+                        {
+                          loan.isPaid
+                          ? <Badge
+                              status="pagado"
+                            >
+                              Pagado
+                            </Badge>
+                          : <>
+                              <Text
+                                theme={theme}
+                                size={14}
+                                weight={500}
+                                color={COLORS[theme].gray.bold}
+                              >
+                                Deuda S/.
+                              </Text>
+                              <Text
+                                theme={theme}
+                                size={13}
+                                weight={300}
+                                color={COLORS[theme].gray.bold}
+                              >
+                              {parseFloat(loan.recovered.toFixed(2))} / {parseFloat(loan.receive_amount.toFixed(2))}
+                              </Text>
+                            </>
+                        }
                       </FlexColumn>
                       <FlexColumn>
                         <Text

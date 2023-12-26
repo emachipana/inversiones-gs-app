@@ -54,11 +54,11 @@ export const Text = styled.p`
 `;
 
 export const Badge = styled.div`
-  padding: 3px 8px;
+  padding: 2px 7px;
   border-radius: 4px;
   background-color: ${({ status }) => status === "pagado" ? "#9FBB73" : (status === "pendiente" ? "#FF9209" : "#E05773")};
   color: white;
-  font-size: 14.5px;
+  font-size: 14px;
 `;
 
 export const Form = styled.form`
