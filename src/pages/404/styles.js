@@ -17,6 +17,7 @@ export const Text = styled.p`
   font-size: ${({ size }) => size || 2}rem;
   font-weight: ${({ weight }) => weight || 700};
   color: ${({ theme }) => COLORS[theme].gray.bold};
+  text-align: center;
 `;
 
 export const Section = styled.section`
