@@ -13,7 +13,7 @@ export const Container = styled.aside`
   align-items: center;
   justify-content: flex-start;
   gap: 1rem;
-  transition: .3s ease-in;
+  transition: .2s ease-in-out;
   position: sticky;
   top: 9.65vh;
 
